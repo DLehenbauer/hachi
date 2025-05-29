@@ -1,5 +1,16 @@
 cmake_minimum_required(VERSION 3.12)
 
+# Have pico_sdk_import.cmake use the local SDK if it was pulled down; otherwise, use path at
+# PICO_SDK_PATH environment variable as specified within pico_sdk_import.cmake
+if (EXISTS "${CMAKE_SOURCE_DIR}/ext/pico-sdk/CMakeLists.txt")
+    set(PICO_SDK_PATH "${CMAKE_SOURCE_DIR}/ext/pico-sdk/" CACHE INTERNAL PICO_SDK_PATH)
+    message("Using local pico SDK at ('${PICO_SDK_PATH}')")
+endif ()
+
+if (NOT DEFINED PICO_SDK_PATH AND NOT DEFINED ENV{PICO_SDK_PATH})
+    message(FATAL_ERROR "PICO_SDK_PATH not defined; either execute:\ngit submodule update --recursive --init\nor set PICO_SDK_PATH in environment")
+endif ()
+
 set(PICO_PLATFORM rp2040)
 set(PICO_BOARD build_hat)
 set(PICO_BOARD_HEADER_DIRS "${CMAKE_CURRENT_LIST_DIR}/board")

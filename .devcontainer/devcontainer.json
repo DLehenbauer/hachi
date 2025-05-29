@@ -1,0 +1,27 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "bootloader",
+	"build": {
+        "dockerfile": "Dockerfile",
+    },
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.cmake-tools",
+				"streetsidesoftware.code-spell-checker",
+				"ms-vscode.cpptools",
+				"marus25.cortex-debug",
+				"mcu-debug.debug-tracker-vscode"	// Required by Cortex-Debug
+			]
+		}
+	},
+    "runArgs": [
+        "--privileged",             // Required to access Picoprobe SWD from dev container
+        "--device=/dev/ttyACM0"     // Expose Picoprobe URT to dev container
+    ],
+	
+	// TODO: Figure out how to connect to Picoprobe as a non-root user.
+    //       Maybe https://github.com/robotdad/piconotes?tab=readme-ov-file#setup-udev-rules-in-wsl?
+    "remoteUser": "root"
+}
