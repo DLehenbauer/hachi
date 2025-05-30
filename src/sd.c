@@ -45,32 +45,42 @@ socket, which SPI it is driven by, and how it is wired.
 #include "hw_config.h"
 
 
+#define SPI1_CSN_GP 13
+#define SPI1_SCK_GP 14
+#define SPI1_SDO_GP 11
+#define SPI1_SDI_GP 12
+
+#define SD_SPI_INSTANCE spi1
+#define SD_CLK_GP SPI1_SCK_GP
+#define SD_CMD_GP SPI1_SDO_GP
+#define SD_DAT_GP SPI1_SDI_GP
+#define SD_CSN_GP 9
+#define SD_DETECT 8
+
 // Hardware Configuration of SPI "objects"
 // Note: multiple SD cards can be driven by one SPI if they use different slave
 // selects.
-static spi_t spis[] = {  // One for each SPI.
+static spi_t spis[] = { // One for each SPI.
     {
-        .hw_inst    = SD_SPI_INSTANCE,  // SPI component
-        .miso_gpio  = SD_SPI_RX_PIN,    // GPIO number (not pin number)
-        .mosi_gpio  = SD_SPI_TX_PIN,
-        .sck_gpio   = SD_SPI_SCK_PIN,
-        .baud_rate  = SD_BAUD_RATE,  
-        //.baud_rate = 25 * 1000 * 1000, // Actual frequency: 20833333. 
-    }
-};
+        .hw_inst = SD_SPI_INSTANCE,
+        .miso_gpio = SD_DAT_GP,
+        .mosi_gpio = SD_CMD_GP,
+        .sck_gpio = SD_CLK_GP,
+
+        // .baud_rate = 1000 * 1000
+        .baud_rate = 12500 * 1000
+        // .baud_rate = 25 * 1000 * 1000 // Actual frequency: 20833333.
+    }};
 
 // Hardware Configuration of the SD Card "objects"
-static sd_card_t sd_cards[] = {  // One for each SD card
+static sd_card_t sd_cards[] = { // One for each SD card
     {
-        .pcName             = "0:",             // Name used to mount device
-        .spi                = &spis[0],         // Pointer to the SPI driving this card
-        .ss_gpio            = SD_SPI_CSN_PIN,   // The SPI slave select GPIO for this SD card
-        .use_card_detect    = true,
-        .card_detect_gpio   = SD_DETECT_PIN,    // Card detect
-        .card_detected_true = 1  // What the GPIO read returns when a card is
-                                 // present. Use -1 if there is no card detect.
-    }
-};
+        .pcName = "0:",  // Name used to mount device
+        .spi = &spis[0], // Pointer to the SPI driving this card
+        .ss_gpio = SD_CSN_GP,
+        .card_detect_gpio = SD_DETECT,
+        .use_card_detect = false // Can't rely on a card detect input
+    }};
 
 /* ********************************************************************** */
 size_t sd_get_num() { return count_of(sd_cards); }
