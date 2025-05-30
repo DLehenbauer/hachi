@@ -12,7 +12,8 @@
 				"streetsidesoftware.code-spell-checker",
 				"ms-vscode.cpptools",
 				"marus25.cortex-debug",
-				"mcu-debug.debug-tracker-vscode"	// Required by Cortex-Debug
+				"mcu-debug.debug-tracker-vscode",	// Required by Cortex-Debug
+				"xaver.clang-format"
 			]
 		}
 	},

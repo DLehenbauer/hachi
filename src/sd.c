@@ -1,14 +1,14 @@
 /* hw_config.c
 Copyright 2021 Carl John Kugler III
 
-Licensed under the Apache License, Version 2.0 (the License); you may not use 
-this file except in compliance with the License. You may obtain a copy of the 
+Licensed under the Apache License, Version 2.0 (the License); you may not use
+this file except in compliance with the License. You may obtain a copy of the
 License at
 
-   http://www.apache.org/licenses/LICENSE-2.0 
-Unless required by applicable law or agreed to in writing, software distributed 
-under the License is distributed on an AS IS BASIS, WITHOUT WARRANTIES OR 
-CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+   http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an AS IS BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 /*
@@ -43,7 +43,6 @@ socket, which SPI it is driven by, and how it is wired.
 #include "rtc.h"
 //
 #include "hw_config.h"
-
 
 #define SPI1_CSN_GP 13
 #define SPI1_SCK_GP 14
@@ -84,7 +83,7 @@ static sd_card_t sd_cards[] = { // One for each SD card
 
 /* ********************************************************************** */
 size_t sd_get_num() { return count_of(sd_cards); }
-sd_card_t *sd_get_by_num(size_t num) {
+sd_card_t* sd_get_by_num(size_t num) {
     if (num <= sd_get_num()) {
         return &sd_cards[num];
     } else {
@@ -92,7 +91,7 @@ sd_card_t *sd_get_by_num(size_t num) {
     }
 }
 size_t spi_get_num() { return count_of(spis); }
-spi_t *spi_get_by_num(size_t num) {
+spi_t* spi_get_by_num(size_t num) {
     if (num <= sd_get_num()) {
         return &spis[num];
     } else {
@@ -108,9 +107,10 @@ bool sd_init() {
 
     // See FatFs - Generic FAT Filesystem Module, "Application Interface",
     // http://elm-chan.org/fsw/ff/00index_e.html
-    sd_card_t *pSD = sd_get_by_num(0);
+    sd_card_t* pSD = sd_get_by_num(0);
     FRESULT fr = f_mount(&pSD->fatfs, pSD->pcName, 1);
-    if (FR_OK != fr) panic("f_mount error: %s (%d)\n", FRESULT_str(fr), fr);
+    if (FR_OK != fr)
+        panic("f_mount error: %s (%d)\n", FRESULT_str(fr), fr);
     FIL fil;
     const char* const filename = "filename.txt";
     fr = f_open(&fil, filename, FA_OPEN_APPEND | FA_WRITE);
@@ -126,6 +126,7 @@ bool sd_init() {
     f_unmount(pSD->pcName);
 
     puts("Goodbye, world!");
-    for (;;);
+    for (;;)
+        ;
     return true;
 }
