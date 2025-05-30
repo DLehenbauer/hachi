@@ -2,10 +2,13 @@
 add_executable(hachi hachi.c 
         xmodem.c 
         led.c
+        sd.c
         run_prog.S
 )
 
 target_include_directories(hachi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_subdirectory("../ext/no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI" hachi)
 
 # pull in common dependencies
 target_link_libraries(hachi 
@@ -13,6 +16,7 @@ target_link_libraries(hachi
         hardware_timer 
         hardware_flash 
         boot_uf2_headers
+        FatFs_SPI
 )
 
 pico_set_binary_type(hachi default)

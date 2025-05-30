@@ -14,6 +14,7 @@
 #include "hachi_config.h"
 #include "led.h"
 #include "xmodem.h"
+#include "sd.h"
 
 #if 0 == PICO_DEFAULT_UART
 #define UARTx uart0
@@ -88,6 +89,7 @@ int main()
 
     led_config();
     // led_on(true) ;
+    sd_init();
     uart_config();
 
     while (true)
